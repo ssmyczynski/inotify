@@ -104,7 +104,7 @@
 
 %%--------------------------------------------------------------------
 %% @doc
-%% Add a file/directory monitor for all file events. Events for the
+%% Add or modify a file/directory monitor for all file events. Events for the
 %% file/directory will be published via a {@link inotify_evt}. The events
 %% resulting from this call will be identified by the unique reference returned
 %% by this function, no matter if the operation was successful or not.
@@ -121,9 +121,10 @@ watch(File) ->
 
 %%--------------------------------------------------------------------
 %% @doc
-%% Add a file/directory monitor for specific events.  This differs from {@link
-%% watch/2} by the additional `mask' argument.  Calling {@link watch/2} is
-%% equivalant to calling {@link watch/3} with `?ALL' as second parameter.
+%% Add or modify a file/directory monitor for specific events.  This
+%% differs from {@link watch/1} by the additional `mask' argument.
+%% Calling {@link watch/1} is equivalant to calling {@link watch/2}
+%% with `?ALL' as second parameter.
 %%
 %% @see inotify:watch/1
 %% @end
