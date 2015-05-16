@@ -24,6 +24,7 @@
 %% gen_server exports
 -export([init/1,
          terminate/2,
+         handle_call/3,
          handle_cast/2,
          handle_info/2]).
 
@@ -53,13 +54,13 @@ start_link() ->
 %% @private
 %%--------------------------------------------------------------------
 watch(File, EventTag) ->
-    gen_server:cast(?SERVER, {watch, {File, EventTag, ?ALL}}).
+    gen_server:call(?SERVER, {watch, {File, EventTag, ?ALL}}).
 
 %%--------------------------------------------------------------------
 %% @private
 %%--------------------------------------------------------------------
 watch(File, EventTag, Mask) ->
-    gen_server:cast(?SERVER, {watch, {File, EventTag, Mask}}).
+    gen_server:call(?SERVER, {watch, {File, EventTag, Mask}}).
 
 %%--------------------------------------------------------------------
 %% @private
@@ -103,15 +104,18 @@ handle_info(Msg, LD) ->
 handle_cast(stop, LD) ->
   {stop,normal, LD};
 
-handle_cast({watch,Watch},LD) ->
-  {noreply, do_watch(Watch, LD)};
-
 handle_cast({unwatch, Unwatch}, LD) ->
   {noreply, do_unwatch(Unwatch, LD)};
 
 handle_cast(Msg, LD) ->
   ?log({unknown_message, Msg}),
   {noreply, LD}.
+
+
+handle_call({watch,Watch},_From,LD) ->
+    {Reply, NewLD} = do_watch(Watch, LD),
+    {reply, Reply, NewLD}.
+
 
 %%%===================================================================
 %%% Internal functions
@@ -148,11 +152,11 @@ do_watch({File, Tag, Mask},LD) ->
         {ok, WD} = talk_to_port(LD#ld.port, {add, LD#ld.fd, File, Mask}),
         put({tag, Tag}, WD),
         put({wd, WD}, Tag),
-        LD
+        {ok, LD}
     catch
         C:R ->
             ?log([{error_watching_file, File, Tag}, {C, R}]),
-            LD
+            {{error, C, R}, LD}
     end.
 
 %%--------------------------------------------------------------------
