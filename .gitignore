@@ -16,3 +16,5 @@
 # This happens during testing
 /.eunit
 /.markdown-preview.html
+c_src/*.d
+_build/
