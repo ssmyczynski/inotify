@@ -133,7 +133,7 @@ watch(File) ->
                    reference().
 watch(File, Mask) ->
     EventTag = make_ref(),
-    inotify_server:watch(File, EventTag, Mask),
+    ok = inotify_server:watch(File, EventTag, Mask),
     EventTag.
 
 %%--------------------------------------------------------------------
