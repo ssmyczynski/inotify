@@ -1,11 +1,11 @@
 2018-02-15 Sven Heyll <sven.heyll@gmail.com>
 
         * Switch to rebar3
-        
+
         * Add a Makefile
-        
+
         * Support hex.pm
-        
+
         * Update documentation
 
 2013-01-01  Sven Heyll <sven.heyll@gmail.com>
@@ -18,7 +18,7 @@
 
         * Add OTP Application
 
-        * Add OTP gen_event     
+        * Add OTP gen_event
 
 2010-02-01  Mats Cronqvist  <masse@kreditor.se>
 
@@ -31,5 +31,3 @@
 
 	* src/inoteefy.erl (talk_to_port):
 	fixed race condition between synchronous and asynchronous events
-	
-

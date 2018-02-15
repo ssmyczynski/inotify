@@ -3,32 +3,24 @@ SHELL = /bin/sh
 
 .DEFAULT_GOAL := compile
 
-.PHONY = compile clean test edoc dep
+.PHONY: publish test dialyzer compile clean
 
-dep:
-	$(REBAR) get-deps
-	$(REBAR) update-deps
-	
+publish: clean compile dialyzer test
+	$(REBAR) hex publish
+	$(REBAR) hex docs
 
-edoc: dep clean compile
-	$(REBAR) doc skip_deps=true
-	git checkout gh-pages	
-	mv doc/*.html .
-	mv doc/*.css .
-	mv doc/*.png .
-	git add . 
-	git commit -m "Update auto-generated E-Doc"
-	git push origin gh-pages
-	git checkout master
+test: compile
+	$(REBAR) eunit
+
+dialyzer: compile
+	$(REBAR) dialyzer
 
 compile:
 	$(REBAR) compile
-
-eunit: clean compile
-	$(REBAR) skip_deps=true eunit
 
 clean:
 	$(REBAR) clean
 	rm -f doc/*.html
 	rm -f doc/*.css
 	rm -f doc/*.png
+	rm -f TEST-*.xml

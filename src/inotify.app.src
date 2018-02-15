@@ -1,6 +1,13 @@
 {application, inotify, [{description, "Linux file alternation monitor."},
-                        {vsn, "0.4.1"},
+                        {vsn, "0.4.2"},
 			{registered, [inotify_server, inotify_evt]},
-                        {applications, [kernel,
-                                        stdlib]},
-                        {mod, {inotify, []}}]}.
+                        {mod, {inotify, []}},
+                        {registered, []},
+                        {included_applications, []},
+                        {applications, [kernel, stdlib]},
+                        {env, []},
+                        {start_phases, []},
+                        {maintainers, ["Sven Heyll"]},
+                        {licenses, ["MIT"]},
+                        {links, [{"Github", "https://github.com/sheyll/inotify"}]}
+                       ]}.

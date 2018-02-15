@@ -1,3 +1,4 @@
+@version 0.4.2
 @title inotify - Erlang OTP application for Linux file monitoring
 @doc
 
@@ -13,15 +14,6 @@ All file notifications are published via a gen_event.
 
 == Installation ==
 
-If using as a dependency in another rebar project add this snippet to the projects
-rebar.config:
-
-```
-  {deps, [
-        ... other dependencies ...
-        {inotify, ".*", {git, "https://github.com/sheyll/inotify.git"}}]}
-'''
-
 The application must included in the reltool.config and the applications using
 this application must have a corresponding entry in their '*.app' files.
 
@@ -32,7 +24,7 @@ by other applications.
 
 If building from git:
 ```
- ./rebar compile
+ make compile
 '''
 You can play around with it by doing this:
 ```
