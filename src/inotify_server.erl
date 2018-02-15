@@ -26,7 +26,9 @@
          terminate/2,
          handle_call/3,
          handle_cast/2,
-         handle_info/2]).
+         handle_info/2,
+         handle_call/3,
+         code_change/3]).
 
 -define(SERVER, ?MODULE).
 
@@ -111,11 +113,18 @@ handle_cast(Msg, LD) ->
   ?log({unknown_message, Msg}),
   {noreply, LD}.
 
-
+%%--------------------------------------------------------------------
+%% @private
+%%--------------------------------------------------------------------
 handle_call({watch,Watch},_From,LD) ->
     {Reply, NewLD} = do_watch(Watch, LD),
     {reply, Reply, NewLD}.
 
+%%--------------------------------------------------------------------
+%% @private
+%%--------------------------------------------------------------------
+code_change(_OldVsn, State, _Extra) ->
+  {ok, State}.
 
 %%%===================================================================
 %%% Internal functions
