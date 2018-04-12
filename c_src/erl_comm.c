@@ -6,7 +6,7 @@
 
 /*
  * inputs
- *    buf     a pointer the buffer to place the message in
+ *    pbuf    a pointer to a pointer to the buffer to place the message in
  *    size    size of buf
  *    curpos  current offset into buf. Should be set to 0 before
  *            initial call
@@ -16,12 +16,13 @@
  *            1 when there is more to read
  *            2 when the message is complete
  */
-int read_cmd(char *buf, int *size, int *curpos)
+int read_cmd(char **pbuf, int *size, int *curpos)
 {
   int len;
   int count;
   int desired;
 
+  char *buf = *pbuf;
   if (*curpos < 2) {
     /* read header */
     count = read(0, buf + *curpos, 2 - *curpos);
@@ -37,14 +38,17 @@ int read_cmd(char *buf, int *size, int *curpos)
    * the desired amount to read taking into account
    * the ammount already read
    */
-  len = (buf[0] << 8) | buf[1];
+  len = ((buf[0] << 8) & 0x0000ff00) | (buf[1] & 0x00ff);
   desired = len - *curpos + 2;
 
   /* check buffer size and realloc if necessary */
   if (len > *size) {
-    buf = (char *) realloc(buf, len);
-    if (buf == NULL)
+    char *newbuf = (char *) realloc(buf, len);
+    if (newbuf == NULL)
       return -1;
+    memset(*pbuf, 0, len - (*size));
+    *pbuf = newbuf;
+    buf = *pbuf;
     *size = len;
   }
 
