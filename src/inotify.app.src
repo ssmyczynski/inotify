@@ -1,5 +1,5 @@
 {application, inotify, [{description, "Linux file alternation monitor."},
-                        {vsn, "0.4.2"},
+                        {vsn, "0.4.3"},
 			{registered, [inotify_server, inotify_evt]},
                         {mod, {inotify, []}},
                         {registered, []},

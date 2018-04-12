@@ -1,3 +1,7 @@
+2018-04-12 Version 0.4.3
+
+	* Merge pull request #5 from **Neeraj** to fix handling of long paths
+
 2018-02-15 Sven Heyll <sven.heyll@gmail.com>
 
         * Switch to rebar3
