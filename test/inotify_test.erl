@@ -16,26 +16,26 @@
 
 monitor_file_test() ->
     process_flag(trap_exit, true),
-    file:delete("/tmp/inotify_test"),
+    file:delete("/tmp/inotify_test22222222222222222222222222222222222222222222222222222222222222222222222221232132132131232132132132132132132132213"),
 
     inotify:start(x,y),
     Ref1 = inotify:watch("/tmp/", ?ALL),
     ok = inotify:add_handler(Ref1, ?MODULE, self()),
     receive after 100 -> ok end,
 
-    {ok, H} = file:open("/tmp/inotify_test", [read, write]),
+    {ok, H} = file:open("/tmp/inotify_test22222222222222222222222222222222222222222222222222222222222222222222222221232132132131232132132132132132132132213", [read, write]),
 
     receive
-        {[create],0,"inotify_test"} -> pass;
+        {[create],0,"inotify_test22222222222222222222222222222222222222222222222222222222222222222222222221232132132131232132132132132132132132213"} -> pass;
         M1 -> throw({expected_message_file_create_but_got, M1})
     after 1000 -> throw(expected_create)
     end,
     receive
-        {[open],0,"inotify_test"} -> pass;
+        {[open],0,"inotify_test22222222222222222222222222222222222222222222222222222222222222222222222221232132132131232132132132132132132132213"} -> pass;
         M2 -> throw({expected_message_file_open_but_got, M2})
     after 1000 -> throw(expected_open)
     end,
-    Ref2 = inotify:watch("/tmp/inotify_test"),
+    Ref2 = inotify:watch("/tmp/inotify_test22222222222222222222222222222222222222222222222222222222222222222222222221232132132131232132132132132132132132213"),
     inotify:unwatch(Ref1),
     ok = inotify:add_handler(Ref2, ?MODULE, self()),
     receive after 100 -> ok end,
@@ -54,7 +54,7 @@ monitor_file_test() ->
     Ref3 = inotify:watch("/tmp/", ?ALL),
     ok = inotify:add_handler(Ref3, ?MODULE, self()),
     receive after 100 -> ok end,
-    ok = file:delete("/tmp/inotify_test"),
+    ok = file:delete("/tmp/inotify_test22222222222222222222222222222222222222222222222222222222222222222222222221232132132131232132132132132132132132213"),
     receive
         {[attrib],0,""} -> pass
     after 1000 ->
@@ -77,7 +77,7 @@ monitor_file_test() ->
             end
     end,
     receive
-        {[delete],0,"inotify_test"} -> pass
+        {[delete],0,"inotify_test22222222222222222222222222222222222222222222222222222222222222222222222221232132132131232132132132132132132132213"} -> pass
     after 1000 ->
             receive X4 -> throw({expected, X4})
             after 1000 -> throw(expected_delete)
