@@ -30,6 +30,7 @@ https://github.com/sheyll/inotify/blob/master/test/inotify_test.erl
 Release History
 ---------------
 
+* 20180416 version 0.4.3 fix long file name handling
 * 20180215 version 0.4.2 rebar3 and hex.pm support
 * 2015???? version 0.4.1 don't build on windows
 * 20130101 version 0.4.0 switch to rebar
