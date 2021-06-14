@@ -290,6 +290,7 @@ int note_read_send(int len, char *buf) {
  */
 int note_read(note_t *note, fd_set *readfds) {
   char  buf[BUF_LEN];
+  char *pbuf;
   int len, rc, fd = 0;
   note_entry_t *cur;
 
@@ -297,7 +298,6 @@ int note_read(note_t *note, fd_set *readfds) {
     if (FD_ISSET(cur->fd, readfds)) {
       fd = cur->fd;
 
-      memset(buf, 0, BUF_LEN);
       rc = ioctl(fd, FIONREAD, &len );
 
       if (rc != 0)
@@ -307,15 +307,31 @@ int note_read(note_t *note, fd_set *readfds) {
       if (len <= 0)
 	continue;
 
-      /* FIXME: potential buffer over flow bug here */
-      read(fd, buf, len);
-
-      if (len < 0) {
-	 perror("note_read read()");
-      } else if (len > 0) {
-	if (note_read_send(len, buf) < 0)
-	  return(-1);
+      if (len <= BUF_LEN) {
+        pbuf = buf;
+      } else {
+        pbuf = malloc(len);
+        if (pbuf == NULL) {
+          perror("malloc()");
+          return(-1);
+        }
       }
+
+      rc = read(fd, pbuf, len);
+      if (rc != len) {
+	 perror("note_read read()");
+         if (pbuf != buf)
+           free(pbuf);
+         return(-1);
+      }
+      
+      rc = note_read_send(len, pbuf);
+
+      if (pbuf != buf)
+        free(pbuf);
+      
+      if (rc < 0)
+        return(-1);
     }
   }
   return(0);
